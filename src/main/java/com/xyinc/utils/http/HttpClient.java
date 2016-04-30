@@ -5,22 +5,23 @@ import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpClient {
+	private static final Logger LOGGER = LoggerFactory.getLogger(HttpClient.class);
 	
 	public static Document doPost(final String url, final Map<String, String> params){
     	Document response;
     	try {
-    		System.out.println(params);
     		response = Jsoup.connect(url)
 					  .data(params)
 					  .post();
-//    		System.out.println(response);
+    		
 			return response;
 			
 		} catch (IOException e) {
-			// TODO inserir logger
-			e.printStackTrace();
+			LOGGER.error("Error during request.", e);
 			return null;
 		}
     }

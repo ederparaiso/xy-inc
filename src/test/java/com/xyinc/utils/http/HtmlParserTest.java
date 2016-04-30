@@ -16,7 +16,7 @@ public class HtmlParserTest {
 	@Test
 	public void parsingEmptyResponseShouldReturnEmptyAddressList() throws IOException{
 		File file = new File("src/test/resources/mockResultEmpty.html");
-		String html = FileUtils.readFileToString(file);
+		String html = FileUtils.readFileToString(file, "UTF-8");
 		List<Address> parsedResult = HtmlParser.parse(Jsoup.parse(html));
 		Assert.assertTrue(parsedResult.isEmpty());
 	}
@@ -24,7 +24,7 @@ public class HtmlParserTest {
 	@Test
 	public void parsingSingleAddresResponseShouldReturnAddressListOfSize1() throws IOException{
 		File file = new File("src/test/resources/mockResultSingleElement.html");
-		String html = FileUtils.readFileToString(file);
+		String html = FileUtils.readFileToString(file, "UTF-8");
 		List<Address> parsedResult = HtmlParser.parse(Jsoup.parse(html));
 		Assert.assertEquals(1, parsedResult.size());
 	}
@@ -32,7 +32,7 @@ public class HtmlParserTest {
 	@Test
 	public void parsingTwoAddresResponseShouldReturnAddressListOfSize2() throws IOException{
 		File file = new File("src/test/resources/mockResultList.html");
-		String html = FileUtils.readFileToString(file);
+		String html = FileUtils.readFileToString(file, "UTF-8");
 		List<Address> parsedResult = HtmlParser.parse(Jsoup.parse(html));
 		Assert.assertEquals(2, parsedResult.size());
 	}
@@ -40,7 +40,7 @@ public class HtmlParserTest {
 	@Test
 	public void parsingResponseWithAllAddressDetailsShouldReturnAddressWithAllParameters() throws IOException{
 		File file = new File("src/test/resources/mockResultDefaultAddress.html");
-		String html = FileUtils.readFileToString(file);
+		String html = FileUtils.readFileToString(file, "UTF-8");
 		List<Address> parsedResult = HtmlParser.parse(Jsoup.parse(html));
 		Assert.assertEquals(1, parsedResult.size());
 		Assert.assertEquals("Rua Arlindo Teixeira", parsedResult.get(0).getStreetName());

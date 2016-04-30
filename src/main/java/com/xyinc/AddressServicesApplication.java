@@ -7,7 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AddressServicesApplication {
 	public static void main(String[] args) {
         SpringApplication.run(AddressServicesApplication.class, args);
-        //TODO incluir logger
-        System.out.println("Server up");
     }
 }

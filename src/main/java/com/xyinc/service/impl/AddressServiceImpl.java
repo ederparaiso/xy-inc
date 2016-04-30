@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.xyinc.model.Address;
@@ -13,8 +16,10 @@ import com.xyinc.utils.http.HttpClient;
 
 @Service
 public class AddressServiceImpl implements AddressService{
-	//TODO colocar em arquivo de properties
-	private static final String ZIP_CODE_SEARCH_URL = "http://www.buscacep.correios.com.br/sistemas/buscacep/resultadoBuscaCepEndereco.cfm";
+	@Value("${address.search.url}")
+	private String zipCodeSearchUrl;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddressServiceImpl.class);
 	private static Map<String, String> resultadoBuscaCepEnderecoDefaultParams;
 	static{
 		resultadoBuscaCepEnderecoDefaultParams = new HashMap<>();
@@ -22,13 +27,18 @@ public class AddressServiceImpl implements AddressService{
 		resultadoBuscaCepEnderecoDefaultParams.put("tipoCEP","ALL");
 	}
 	
+	public void setUrl(String url) {
+		zipCodeSearchUrl = url;
+	}
+	
 	@Override
 	public List<Address> findByZipCode(String zipCode) {
 		Map<String, String> params = new HashMap<>();
 		params.putAll(resultadoBuscaCepEnderecoDefaultParams);
 		params.put("relaxation", zipCode);
-		System.out.println(params);
-		return HtmlParser.parse(HttpClient.doPost(ZIP_CODE_SEARCH_URL, params));
+		
+		LOGGER.debug("service params: " + params.toString());
+		return HtmlParser.parse(HttpClient.doPost(zipCodeSearchUrl, params));
 	}
 
 	@Override
@@ -36,7 +46,9 @@ public class AddressServiceImpl implements AddressService{
 		Map<String, String> params = new HashMap<>();
 		params.putAll(resultadoBuscaCepEnderecoDefaultParams);
 		params.put("relaxation", streetName);
-		return HtmlParser.parse(HttpClient.doPost(ZIP_CODE_SEARCH_URL, params));
+		
+		LOGGER.debug("service params: " + params.toString());
+		return HtmlParser.parse(HttpClient.doPost(zipCodeSearchUrl, params));
 	}
 	
 }
